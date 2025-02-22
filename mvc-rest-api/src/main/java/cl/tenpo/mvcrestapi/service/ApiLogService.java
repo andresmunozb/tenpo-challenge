@@ -1,7 +1,7 @@
 package cl.tenpo.mvcrestapi.service;
 
-import cl.tenpo.mvcrestapi.repository.entity.ApiLogEntity;
+import cl.tenpo.mvcrestapi.core.domain.ApiLog;
 
 public interface ApiLogService {
-  ApiLogEntity save(ApiLogEntity apiLogEntity);
+  ApiLog save(ApiLog apiLog);
 }

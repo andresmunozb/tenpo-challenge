@@ -1,7 +1,7 @@
 package cl.tenpo.mvcrestapi.controller.filter;
 
-import cl.tenpo.mvcrestapi.repository.entity.ApiLogEntity;
-import cl.tenpo.mvcrestapi.service.ApiLogService;
+import cl.tenpo.mvcrestapi.core.domain.ApiLog;
+import cl.tenpo.mvcrestapi.event.ApiLogPublisher;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class LoggingFilter implements Filter {
 
-  private final ApiLogService apiLogService;
+  private final ApiLogPublisher apiLogPublisher;
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -37,6 +37,7 @@ public class LoggingFilter implements Filter {
 
     String endpoint = httpRequest.getRequestURI();
     String method = httpRequest.getMethod();
+    String queryParams = httpRequest.getQueryString();
 
     ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(httpRequest);
     ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(httpResponse);
@@ -51,23 +52,17 @@ public class LoggingFilter implements Filter {
     String responseBody =
       new String(wrappedResponse.getContentAsByteArray(), wrappedResponse.getCharacterEncoding());
 
-    log.info("Endpoint: {}", endpoint);
-    log.info("Método HTTP: {}", method);
-    log.info("Fecha y hora de la llamada: {}", startTime);
-    log.info("Fecha y hora de respuesta: {}", endTime);
-    log.info("Request Body: {}", requestBody);
-    log.info("Response Body: {}", responseBody);
+    ApiLog apiLog = ApiLog.builder()
+      .endpoint(endpoint)
+      .httpMethod(method)
+      .queryParams(queryParams)
+      .requestBody(requestBody)
+      .responseBody(responseBody)
+      .startDateTime(startTime)
+      .endDateTime(endTime)
+      .build();
 
-    // save to database async
-    ApiLogEntity apiLogEntity = new ApiLogEntity();
-    apiLogEntity.setEndpoint(endpoint);
-    apiLogEntity.setHttpMethod(method);
-    apiLogEntity.setCallDateTime(startTime);
-    apiLogEntity.setQueryString("");
-    apiLogEntity.setRequestBody(requestBody);
-    apiLogEntity.setResponseBody(responseBody);
-
-    this.apiLogService.save(apiLogEntity); // todo: it should be async
+    this.apiLogPublisher.publishEvent(apiLog);
 
     wrappedResponse.copyBodyToResponse();
   }

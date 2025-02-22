@@ -1,4 +1,4 @@
-package cl.tenpo.mvcrestapi.common;
+package cl.tenpo.mvcrestapi.core.common;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

@@ -1,7 +1,7 @@
 package cl.tenpo.mvcrestapi.controller.exception;
 
-import cl.tenpo.mvcrestapi.common.Notification;
-import cl.tenpo.mvcrestapi.common.Response;
+import cl.tenpo.mvcrestapi.core.common.Notification;
+import cl.tenpo.mvcrestapi.core.common.Response;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

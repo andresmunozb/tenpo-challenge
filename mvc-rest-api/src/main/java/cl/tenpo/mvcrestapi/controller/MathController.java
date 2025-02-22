@@ -1,6 +1,6 @@
 package cl.tenpo.mvcrestapi.controller;
 
-import cl.tenpo.mvcrestapi.common.Response;
+import cl.tenpo.mvcrestapi.core.common.Response;
 import cl.tenpo.mvcrestapi.controller.dto.MathOperandsRequest;
 import cl.tenpo.mvcrestapi.service.MathService;
 import jakarta.validation.Valid;

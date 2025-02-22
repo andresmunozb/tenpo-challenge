@@ -1,4 +1,4 @@
-package cl.tenpo.mvcrestapi.common;
+package cl.tenpo.mvcrestapi.core.common;
 
 import lombok.Builder;
 import lombok.Data;
