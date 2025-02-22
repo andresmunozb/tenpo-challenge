@@ -27,7 +27,7 @@ public class ExternalPercentageServiceImpl implements ExternalPercentageService 
       throw new ExternalPercentageException();
     }
 
-    return BigDecimal.valueOf(0.7);
+    return BigDecimal.valueOf(0.1);
   }
 
   @CacheEvict(value = "percentage")
