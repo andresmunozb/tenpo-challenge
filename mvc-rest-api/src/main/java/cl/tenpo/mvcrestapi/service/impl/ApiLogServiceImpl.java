@@ -6,6 +6,9 @@ import cl.tenpo.mvcrestapi.service.ApiLogService;
 import cl.tenpo.mvcrestapi.service.mapper.ApiLogServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,5 +23,10 @@ public class ApiLogServiceImpl implements ApiLogService {
   public ApiLog save(ApiLog apiLog) {
     return apiLogServiceMapper.toApiLog(
       apiLogRepository.save(apiLogServiceMapper.toApiLogEntity(apiLog)));
+  }
+
+  public Page<ApiLog> findAll(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return apiLogRepository.findAll(pageable).map(apiLogServiceMapper::toApiLog);
   }
 }
