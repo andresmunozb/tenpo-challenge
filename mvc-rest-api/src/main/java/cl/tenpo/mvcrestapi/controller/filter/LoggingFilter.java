@@ -1,4 +1,4 @@
-package cl.tenpo.mvcrestapi.controller.config;
+package cl.tenpo.mvcrestapi.controller.filter;
 
 import cl.tenpo.mvcrestapi.repository.entity.ApiLogEntity;
 import cl.tenpo.mvcrestapi.service.ApiLogService;
@@ -67,7 +67,7 @@ public class LoggingFilter implements Filter {
     apiLogEntity.setRequestBody(requestBody);
     apiLogEntity.setResponseBody(responseBody);
 
-    this.apiLogService.save(apiLogEntity);
+    this.apiLogService.save(apiLogEntity); // todo: it should be async
 
     wrappedResponse.copyBodyToResponse();
   }

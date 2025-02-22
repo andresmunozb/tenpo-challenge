@@ -1,4 +1,4 @@
-package cl.tenpo.mvcrestapi.controller.config;
+package cl.tenpo.mvcrestapi.controller.exception;
 
 import cl.tenpo.mvcrestapi.common.Notification;
 import cl.tenpo.mvcrestapi.common.Response;
