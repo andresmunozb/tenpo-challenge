@@ -58,8 +58,6 @@ dependencies {
     // SpringDoc OpenAPI
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion"
     // JUnit Platform Launcher
-
-
 }
 
 tasks.named('test') {

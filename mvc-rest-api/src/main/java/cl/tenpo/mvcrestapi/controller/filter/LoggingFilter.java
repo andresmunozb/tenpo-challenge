@@ -13,6 +13,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -20,6 +21,8 @@ import java.time.Instant;
 public class LoggingFilter implements Filter {
 
   private final ApiLogPublisher apiLogPublisher;
+
+  private static final List<String> EXCLUDED_PATHS = List.of(".*/swagger-ui.*", ".*/v3/api-docs.*");
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -38,6 +41,11 @@ public class LoggingFilter implements Filter {
     String endpoint = httpRequest.getRequestURI();
     String method = httpRequest.getMethod();
     String queryParams = httpRequest.getQueryString();
+
+    if (shouldIgnoreEndpoint(endpoint)) {
+      chain.doFilter(request, response);
+      return;
+    }
 
     ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(httpRequest);
     ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(httpResponse);
@@ -65,5 +73,9 @@ public class LoggingFilter implements Filter {
     this.apiLogPublisher.publishEvent(apiLog);
 
     wrappedResponse.copyBodyToResponse();
+  }
+
+  private boolean shouldIgnoreEndpoint(String endpoint) {
+    return EXCLUDED_PATHS.stream().anyMatch(endpoint::matches);
   }
 }
