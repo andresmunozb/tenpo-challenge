@@ -18,6 +18,7 @@ public class ApiLogServiceImpl implements ApiLogService {
   @Override
   @Transactional
   public ApiLog save(ApiLog apiLog) {
-    return apiLogServiceMapper.toApiLog(apiLogRepository.save(apiLogServiceMapper.toApiLogEntity(apiLog)));
+    return apiLogServiceMapper.toApiLog(
+      apiLogRepository.save(apiLogServiceMapper.toApiLogEntity(apiLog)));
   }
 }

@@ -31,7 +31,7 @@ public class ExternalPercentageServiceImpl implements ExternalPercentageService 
   }
 
   @CacheEvict(value = "percentage")
-  public void updatePercentage(){
+  public void updatePercentage() {
     log.info("percentage cache removed");
   }
 }
