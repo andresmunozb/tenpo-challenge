@@ -1,4 +1,4 @@
-package cl.tenpo.mvcrestapi.controller;
+package cl.tenpo.mvcrestapi.controller.config;
 
 import cl.tenpo.mvcrestapi.repository.entity.ApiLogEntity;
 import cl.tenpo.mvcrestapi.service.ApiLogService;
