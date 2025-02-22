@@ -29,4 +29,8 @@ public class Response<T> {
   public static <T> Response<T> of(T data, List<Notification> notifications) {
     return new Response<>(data, notifications);
   }
+
+  public static <T> Response<T> empty() {
+    return new Response<>(null);
+  }
 }

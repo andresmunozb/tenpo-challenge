@@ -16,6 +16,9 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+  private static final String JSON_ERROR_MESSAGE = "malformed json or invalid data type";
+  private static final String INTERNAL_SERVER_ERROR_MESSAGE = "internal server error";
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Response<?>> handleValidationExceptions(
@@ -36,8 +39,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Response<?>> handleHttpMessageNotReadableException(
     HttpMessageNotReadableException ex) {
-    String errorMessage = "malformed json or invalid data type"; // todo move to constant
-    Notification notification = Notification.valueOf(errorMessage);
+    Notification notification = Notification.valueOf(JSON_ERROR_MESSAGE);
     return new ResponseEntity<>(
       Response.of(null, List.of(notification)),
       HttpStatus.BAD_REQUEST
@@ -47,11 +49,12 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Response<?>> handleGenericException(Exception ex) {
-    Notification notification =
-      Notification.valueOf("internal server error"); // todo move to constant
+    Notification notification = Notification.valueOf(INTERNAL_SERVER_ERROR_MESSAGE);
     return new ResponseEntity<>(
       Response.of(null, List.of(notification)),
-      HttpStatus.BAD_REQUEST
+      HttpStatus.INTERNAL_SERVER_ERROR
     );
   }
+
+  // todo add common exceptions and implement them on internal exceptions
 }
