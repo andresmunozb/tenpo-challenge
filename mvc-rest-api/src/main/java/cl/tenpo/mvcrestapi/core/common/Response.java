@@ -26,6 +26,10 @@ public class Response<T> {
     return new Response<>(data);
   }
 
+  public static <T> Response<T> of(List<Notification> notifications) {
+    return new Response<>(null, notifications);
+  }
+
   public static <T> Response<T> of(T data, List<Notification> notifications) {
     return new Response<>(data, notifications);
   }
