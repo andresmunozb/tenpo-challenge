@@ -3,7 +3,7 @@ name: Docker Build and Push
 on:
   push:
     branches:
-      - main  # Se activa cuando hay un push a la rama main
+      - master  # Se activa cuando hay un push a la rama main
 
 jobs:
   build-and-push:
