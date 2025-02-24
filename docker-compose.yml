@@ -18,8 +18,8 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
 
   app:
-    image: mvc-rest-api:latest
-    container_name: mvc-rest-api
+    image: tenpo-challenge:0.0.1
+    container_name: tenpo-challenge
     build:
       context: .
       dockerfile: Dockerfile
@@ -31,7 +31,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
-    command: ["java", "-jar", "/app/app.jar"]
+    command: [ "java", "-jar", "/app/app.jar" ]
     depends_on:
       - postgres
       - redis
