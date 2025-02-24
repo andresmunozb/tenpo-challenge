@@ -8,15 +8,21 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 @Order(2)
@@ -24,6 +30,16 @@ public class RedisRateLimitFilter extends OncePerRequestFilter {
 
   private final RedisTemplate<String, Long> redisTemplate;
   private final ObjectMapper objectMapper;
+
+  private static final String LUA_SCRIPT =
+    "local current = redis.call('incr', KEYS[1])\n" +
+      "if current == 1 then\n" +
+      "    redis.call('expire', KEYS[1], ARGV[1])\n" +
+      "end\n" +
+      "return current";
+
+  private final RedisScript<Long> rateLimitScript =
+    new DefaultRedisScript<>(LUA_SCRIPT, Long.class);
 
   @Override
   public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -33,35 +49,36 @@ public class RedisRateLimitFilter extends OncePerRequestFilter {
     String ip = request.getRemoteAddr();
     String key = "rate-limit:" + ip;
 
-    // incrementar contador de manera atómica
-    Long count = redisTemplate.opsForValue().increment(key, 1);
-
-
-    if (count == null) {
-      response.setStatus(500);
-      response.setContentType("application/json");
-      objectMapper.writeValue(
-        response.getWriter(),
-        Response.of(List.of(Notification.valueOf("error updating rate limit key in redis")))
-      );
+    try {
+      Long count = redisTemplate.execute(rateLimitScript, Collections.singletonList(key), 60);
+      if (count > 3) {
+        log.warn("too many request for {}", ip);
+        sendErrorResponse(response, 429, "too many requests");
+        return;
+      }
+    } catch (RedisConnectionFailureException e) {
+      log.error("redis connection error {}", e.getMessage());
+      sendErrorResponse(response, 503, "service temporarily unavailable");
+      return;
+    } catch (RedisSystemException e) {
+      log.error("redis operation error {}", e.getMessage());
+      sendErrorResponse(response, 500, "error processing request");
+      return;
+    } catch (Exception e) {
+      log.error("rate limit filter error");
+      sendErrorResponse(response, 500, "internal server error");
       return;
     }
-
-    if (count == 1L) {
-      // no atómico pero idempotente
-      redisTemplate.expire(key, 1, TimeUnit.MINUTES);
-    }
-
-    if (count > 3) {
-      response.setStatus(429);
-      response.setContentType("application/json");
-      objectMapper.writeValue(
-        response.getWriter(),
-        Response.of(List.of(Notification.valueOf("too many requests")))
-      );
-      return;
-    }
-
     chain.doFilter(request, response);
+  }
+
+  private void sendErrorResponse(HttpServletResponse response, int statusCode, String message)
+    throws IOException {
+    response.setStatus(statusCode);
+    response.setContentType("application/json");
+    objectMapper.writeValue(
+      response.getWriter(),
+      Response.of(List.of(Notification.valueOf(message)))
+    );
   }
 }
