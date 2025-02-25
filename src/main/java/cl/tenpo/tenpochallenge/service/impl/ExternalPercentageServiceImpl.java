@@ -23,7 +23,8 @@ public class ExternalPercentageServiceImpl implements ExternalPercentageService 
     SleepUtil.sleep(1000);
 
     if (Math.random() > 0.4) {
-      throw new UnavailableExternalPercentageServiceException("external percentage service unavailable");
+      throw new UnavailableExternalPercentageServiceException(
+        "external percentage service unavailable");
     }
 
     return BigDecimal.valueOf(0.1);
