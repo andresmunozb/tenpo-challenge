@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "4d5e5d45-e057-4c28-81da-91221069157e",
+		"name": "tenpo-challenge-collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26959089"
+	},
+	"item": [
+		{
+			"name": "math",
+			"item": [
+				{
+					"name": "math/binary-sum",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"num1\": 2.5,\r\n    \"num2\": 3.2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/v1/math/binary-sum",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"math",
+								"binary-sum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "math/sum",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numbers\": [5,5]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/v1/math/sum",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"math",
+								"sum"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "percentage",
+			"item": [
+				{
+					"name": "percentage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/v1/percentage",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"percentage"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-logs",
+			"item": [
+				{
+					"name": "api-logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/v1/api-logs?page=0&size=10",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"api-logs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cache",
+			"item": [
+				{
+					"name": "cache/expire",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/v1/cache/expire",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"cache",
+								"expire"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
