@@ -45,6 +45,13 @@ public class RedisRateLimitFilter extends OncePerRequestFilter {
                                FilterChain chain)
     throws ServletException, IOException {
 
+    String endpoint = request.getRequestURI();
+
+    if (FilterUtils.shouldIgnoreEndpoint(endpoint)) {
+      chain.doFilter(request, response);
+      return;
+    }
+
     String ip = request.getRemoteAddr();
     String key = "rate-limit:" + ip;
 
@@ -52,7 +59,8 @@ public class RedisRateLimitFilter extends OncePerRequestFilter {
       Long count = redisTemplate.execute(rateLimitScript, List.of(key), 60);
       if (count > 3) {
         log.warn("too many request for {}", ip);
-        sendErrorResponse(response, 429, "too many requests");
+        sendErrorResponse(response, 429, "too many requests - only 3 requests per minute are " +
+          "allowed");
         return;
       }
     } catch (RedisConnectionFailureException e) {

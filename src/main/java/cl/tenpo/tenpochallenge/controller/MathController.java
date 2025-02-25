@@ -4,6 +4,7 @@ import cl.tenpo.tenpochallenge.controller.dto.MathBinaryOperandsRequest;
 import cl.tenpo.tenpochallenge.controller.dto.MathOperandsRequest;
 import cl.tenpo.tenpochallenge.core.common.Response;
 import cl.tenpo.tenpochallenge.service.MathService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,13 @@ public class MathController {
   private final MathService mathService;
 
   @PostMapping("/sum")
+  @Operation(summary = "Sumar varios números enviados y les agrega un porcentaje")
   public ResponseEntity<Response<BigDecimal>> sum(@Valid @RequestBody MathOperandsRequest request) {
     return ResponseEntity.ok(Response.of(mathService.add(request.getNumbers())));
   }
 
   @PostMapping("/binary-sum")
+  @Operation(summary = "Sumar dos números enviados y les agrega un porcentaje")
   public ResponseEntity<Response<BigDecimal>> binarySum(
     @Valid @RequestBody MathBinaryOperandsRequest request) {
     return ResponseEntity.ok(

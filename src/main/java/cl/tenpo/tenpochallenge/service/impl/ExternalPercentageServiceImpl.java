@@ -29,9 +29,4 @@ public class ExternalPercentageServiceImpl implements ExternalPercentageService 
 
     return BigDecimal.valueOf(0.1);
   }
-
-  @CacheEvict(value = "percentage")
-  public void updatePercentage() {
-    log.info("percentage cache removed");
-  }
 }
