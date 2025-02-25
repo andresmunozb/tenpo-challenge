@@ -7,7 +7,7 @@ Este proyecto es una aplicación desarrollada en **Spring Boot 3.4.2** que utili
 - **Flyway** para la gestión y control de versiones de la base de datos.
 - **Swagger** para la documentación interactiva de la API.
 
-Incluye un archivo ```docker-compose.yml``` para orquestar los servicios de forma rápida.
+Incluye un archivo ```docker-compose.yml``` para desplegar los servicios de forma rápida.
 
 ### **Lista de Endpoints**
 
@@ -23,25 +23,27 @@ Incluye un archivo ```docker-compose.yml``` para orquestar los servicios de form
 ---
 
 ### Swagger
+
 La documentación interactiva de la API generada por Swagger está disponible en:
 
 http://localhost:9090/swagger-ui.html
 
 ### Postman Collection
-Puedes encontrar una colección de postman en el repositorio:
+
+Puedes encontrar una colección de postman con el siguiente nombre:
 
 ```tenpo-challenge-collection.postman_collection.json ```
 
-
-
 ### Desplegar aplicación localmente con Docker (docker-compose)
+
 Puedes deplegar la aplicación localmente con este simple comando:
 ```
 docker compose up -d
 ```
 El comando levantará automáticamente Redis, PostgreSQL y la aplicación API.
 
-### Desplegar PostgreSQL y Resdis con Docker
+### Desplegar PostgreSQL y Resdis con Docker (docker-compose)
+
 Si solamente necesitas desplegar Postges y Redis lo puedes realizar con el siguiente comando
 ```
 docker compose up -d postgres redis
@@ -69,9 +71,20 @@ Configura las siguientes variables de entorno según tus necesidades:
 
 ### Análisis de decisiones técnicas
 
-* Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque actualmente tiene la menor cantidad de vulnerabilidades que el resto de imagenes de jdk
-* Para las imagenes de redis y postgres se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
-* Esto misma consideracion se utiliza para la selección de las capas previas a la construcicón de la imagen de la aplicacion, es decir, se utiliza gradle con alpine.
-* Levantar solamente componentes externos ```docker-compose -f docker-compose-dev.yml up -d```
+* Sobre estructura de archivos:
+  * Se intenta llevar un clean architecture sin aplicar arquitectura hexagonal o algo por el estilo, ya que no valdría la pena para un proyecto tan pequeño.
+    * `Core`: Contiene las principales clases utilizadas por las otras capas.
+    * `Controller`: Contienen los endpoints que se exponen.
+    * `Service`: Contienen la lógica de negocio (simple)
+    * `Repository`: Implementan la comunicación con la base de datos.
+    * `Event`: Maneja eventos de forma asíncrona.
+  * Se  implementa manejo global de excepciones centralizada con `@ControllerAdvice`
+  * 
+    
+* Sobre caché:
+  * 
+* Sobre imágenes docker:
+  * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque actualmente tiene la menor cantidad de vulnerabilidades.
+  * Para las imagenes de redis y postgres se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
 
 
