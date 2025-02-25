@@ -1,5 +1,6 @@
 package cl.tenpo.tenpochallenge.unit.service;
 
+import cl.tenpo.tenpochallenge.service.exception.UnavailableExternalPercentageServiceException;
 import cl.tenpo.tenpochallenge.service.impl.ExternalPercentageServiceImpl;
 import cl.tenpo.tenpochallenge.service.impl.MathServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -33,5 +34,19 @@ class MathServiceImplUnitTest {
 
     Assertions.assertNotNull(result);
     Assertions.assertEquals(expected, result);
+  }
+
+  @Test
+  void shouldThrowUnavailableExternalPercentageServiceException() {
+
+    Mockito.when(externalPercentageService.getPercentage())
+      .thenThrow(new UnavailableExternalPercentageServiceException());
+
+    List<BigDecimal> numbers = List.of(BigDecimal.valueOf(5), BigDecimal.valueOf(5));
+
+
+    Assertions.assertThrows(
+      UnavailableExternalPercentageServiceException.class,
+      () -> mathService.add(numbers).setScale(10, RoundingMode.HALF_UP));
   }
 }

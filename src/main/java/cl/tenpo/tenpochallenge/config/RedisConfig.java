@@ -16,21 +16,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
   @Bean
-  public RedisTemplate<String, Long> redisTemplateLong(RedisConnectionFactory connectionFactory) {
-    RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
-    redisTemplate.setConnectionFactory(connectionFactory);
-
-    redisTemplate.setKeySerializer(new StringRedisSerializer());
-    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-    redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-    redisTemplate.afterPropertiesSet();
-    return redisTemplate;
-  }
-
-  @Bean
   public RedisTemplate<String, Object> redisTemplateObject(
     RedisConnectionFactory connectionFactory) {
     RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -47,7 +32,7 @@ public class RedisConfig {
   }
 
   @Bean
-  public CommandLineRunner testRedisConnection(RedisTemplate<String, Long> redisTemplate) {
+  public CommandLineRunner testRedisConnection(RedisTemplate<String, Object> redisTemplate) {
     return args -> {
       RedisConnectionFactory connectionFactory = redisTemplate.getConnectionFactory();
 
