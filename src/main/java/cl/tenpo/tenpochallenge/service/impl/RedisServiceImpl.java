@@ -1,4 +1,4 @@
-package cl.tenpo.tenpochallenge.service.mapper;
+package cl.tenpo.tenpochallenge.service.impl;
 
 import cl.tenpo.tenpochallenge.service.CacheService;
 import lombok.RequiredArgsConstructor;

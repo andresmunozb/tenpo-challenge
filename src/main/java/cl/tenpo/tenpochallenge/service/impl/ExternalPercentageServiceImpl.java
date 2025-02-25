@@ -4,7 +4,6 @@ import cl.tenpo.tenpochallenge.service.ExternalPercentageService;
 import cl.tenpo.tenpochallenge.service.exception.UnavailableExternalPercentageServiceException;
 import cl.tenpo.tenpochallenge.utils.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;

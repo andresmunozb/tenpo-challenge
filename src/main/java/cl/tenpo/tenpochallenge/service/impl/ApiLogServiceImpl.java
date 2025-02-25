@@ -1,5 +1,6 @@
 package cl.tenpo.tenpochallenge.service.impl;
 
+import cl.tenpo.tenpochallenge.core.common.MinimalPage;
 import cl.tenpo.tenpochallenge.core.domain.ApiLog;
 import cl.tenpo.tenpochallenge.repository.ApiLogRepository;
 import cl.tenpo.tenpochallenge.service.ApiLogService;
@@ -25,8 +26,9 @@ public class ApiLogServiceImpl implements ApiLogService {
       apiLogRepository.save(apiLogServiceMapper.toApiLogEntity(apiLog)));
   }
 
-  public Page<ApiLog> findAll(int page, int size) {
+  public MinimalPage<ApiLog> findAll(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
-    return apiLogRepository.findAll(pageable).map(apiLogServiceMapper::toApiLog);
+    Page<ApiLog> apiLogPage = apiLogRepository.findAll(pageable).map(apiLogServiceMapper::toApiLog);
+    return MinimalPage.of(apiLogPage);
   }
 }
