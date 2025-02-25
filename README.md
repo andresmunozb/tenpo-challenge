@@ -72,7 +72,7 @@ Configura las siguientes variables de entorno según tus necesidades:
 ### Análisis de decisiones técnicas
 
 * Sobre estructura de archivos:
-  * Se intenta llevar un clean architecture sin aplicar arquitectura hexagonal o algo por el estilo, ya que no valdría la pena para un proyecto tan pequeño.
+  * Se intenta llevar un clean architecture sin aplicar arquitectura hexagonal o algo sofisticado, ya que no valdría la pena para un proyecto tan pequeño.
     * `Core`: Contiene las principales clases utilizadas por las otras capas.
     * `Controller`: Contienen los endpoints que se exponen.
     * `Service`: Contienen la lógica de negocio (simple)
