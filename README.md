@@ -1,34 +1,73 @@
 # Tenpo Challenge
-Descripción
+Este proyecto es una aplicación desarrollada en **Spring Boot 3.4.2** que utiliza:
+- **Java 21+**
+- **Gradle 8.12.1+**
+- **PostgreSQL 17.2+** como base de datos relacional principal.
+- **Redis 7.4.2+** como sistema de almacenamiento en caché.
+- **Flyway** para la gestión y control de versiones de la base de datos.
+- **Swagger** para la documentación interactiva de la API.
 
-### Requisitos Previos
-- Java 21 o superior
-- Gradle 8.12.1 o superior
-- PostgreSQL 17.2 o superior
-- Redis 7.4.2 o superior
-- Docker (opcional, para ejecutar la PostgreSQL y Redis)
+Incluye un archivo ```docker-compose.yml``` para orquestar los servicios de forma rápida.
 
-### Ejecución con Docker
+### **Lista de Endpoints**
 
-1. Levanta los servicios con docker compose:
-   ```
-   docker compose up -d
-   ```
-### Ejecución PostgreSQL y Resdis
-1. Levanta los servicios con docker compose:
-   ```
-   docker compose up -d postgres redis
-   ```
-### Ejecución aplicación desde Docker Hub
-1. Levanta la aplicación:
-   ```
-   docker run -d --name tenpo-challenge -p 9090:9090 --env DATASOURCE_URL=jdbc:postgresql://192.168.1.90:5432/postgres --env DATASOURCE_USERNAME=postgres --env DATASOURCE_PASSWORD=postgres --env REDIS_HOST=192.168.1.90 --env REDIS_PORT=6379 andresmunozb/tenpo-challenge:latest
-   ```
-2. Tambien puedes utilizar docker compose de la siguiente forma:
-   ```
-   docker run -d --name tenpo-challenge -p 9090:9090 --env DATASOURCE_URL=jdbc:postgresql://192.168.1.90:5432/postgres --env DATASOURCE_USERNAME=postgres --env DATASOURCE_PASSWORD=postgres --env REDIS_HOST=192.168.1.90 --env REDIS_PORT=6379 andresmunozb/tenpo-challenge:latest
-   ```
-### Consideraciones
+| **Endpoint**              | **Método** | **Descripción**                                              | **Body**                 | **Params**         |
+|---------------------------|------------|--------------------------------------------------------------|--------------------------|--------------------|
+| `/actuator/health`        | `GET`      | Recupera el estado de la aplicación                          | -                        | -                  |
+| `/api/v1/math/binary-sum` | `POST`     | Calcula la suma de dos números y le agrega un porcentaje.    | `{"num1": 5,"num2": 5}`  | -                  |
+| `/api/v1/math/sum`        | `POST`     | Calcula la suma de varios números y le agrega un porcentaje. | `{"numbers": [5,5,5,5]}` | -                  |
+| `/api/v1/percentage`      | `GET`      | Recupera el porcentaje actual.                               | -                        | -                  |
+| `/api/v1/api-logs`        | `GET`      | Recupera un listado de logs generados por la API.            | -                        | `?page=27&size=10` |
+| `/api/v1/cache/expire`    | `PUT`      | Expira las claves del caché para forzar su recarga.          | -                        | -                  |
+
+---
+
+### Swagger
+La documentación interactiva de la API generada por Swagger está disponible en:
+
+http://localhost:9090/swagger-ui.html
+
+### Postman Collection
+Puedes encontrar una colección de postman en el repositorio:
+
+```tenpo-challenge-collection.postman_collection.json ```
+
+
+
+### Desplegar aplicación localmente con Docker (docker-compose)
+Puedes deplegar la aplicación localmente con este simple comando:
+```
+docker compose up -d
+```
+El comando levantará automáticamente Redis, PostgreSQL y la aplicación API.
+
+### Desplegar PostgreSQL y Resdis con Docker
+Si solamente necesitas desplegar Postges y Redis lo puedes realizar con el siguiente comando
+```
+docker compose up -d postgres redis
+```
+
+### Desplegar aplicación desde Docker Hub
+
+```
+docker run -d --name tenpo-challenge -p 9090:9090 --env DATASOURCE_URL=jdbc:postgresql://192.168.1.90:5432/postgres --env DATASOURCE_USERNAME=postgres --env DATASOURCE_PASSWORD=postgres --env REDIS_HOST=192.168.1.90 --env REDIS_PORT=6379 andresmunozb/tenpo-challenge:latest
+```
+
+### Variables de entorno para imagen Docker Hub
+
+Configura las siguientes variables de entorno según tus necesidades:
+
+- **PostgreSQL**:
+  - `DATASOURCE_URL`: URL de conexión a la base de datos. Incluye el protocolo JDBC, la dirección del servidor, el puerto y el nombre de la base de datos (por defecto ```jdbc:postgresql://localhost:5432/postgres```)
+  - `DATASOURCE_USERNAME`: Usuario de la base de datos (por defecto ```postgres```)
+  - `DATASOURCE_PASSWORD`: Contraseña del usuario (por defecto ```postgres```)
+
+- **Redis**:
+  - `REDIS_HOST`: Dirección del servidor Redis (por defecto `localhost`).
+  - `REDIS_PORT`: Puerto del servidor Redis (por defecto `6379`).
+
+
+### Análisis de decisiones técnicas
 
 * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque actualmente tiene la menor cantidad de vulnerabilidades que el resto de imagenes de jdk
 * Para las imagenes de redis y postgres se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.

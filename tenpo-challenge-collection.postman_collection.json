@@ -7,6 +7,33 @@
 	},
 	"item": [
 		{
+			"name": "actuator",
+			"item": [
+				{
+					"name": "actuator/health",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "math",
 			"item": [
 				{
