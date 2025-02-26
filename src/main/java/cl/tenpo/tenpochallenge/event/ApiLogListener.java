@@ -18,6 +18,10 @@ public class ApiLogListener {
   @EventListener
   @Async
   public void handleEvent(ApiLog event) {
-    apiLogService.save(event);
+    try {
+      apiLogService.save(event);
+    } catch (Exception e) {
+      log.error("error saving api log: {}", e.getMessage());
+    }
   }
 }

@@ -20,6 +20,6 @@ public class MathServiceImpl implements MathService {
   public BigDecimal add(List<BigDecimal> numbers) {
     BigDecimal percentage = externalPercentageService.getPercentage();
     BigDecimal sum = numbers.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-    return percentage.multiply(sum);
+    return sum.multiply(BigDecimal.ONE.add(percentage));
   }
 }

@@ -16,6 +16,6 @@ import java.util.List;
 @Builder
 public class MathOperandsRequest {
   @NotEmpty
-  @JsonDeserialize(contentUsing = NumberDeserializers.BigDecimalDeserializer.class) //todo revisar
+  @JsonDeserialize(contentUsing = NumberDeserializers.BigDecimalDeserializer.class)
   private List<@NotNull BigDecimal> numbers;
 }

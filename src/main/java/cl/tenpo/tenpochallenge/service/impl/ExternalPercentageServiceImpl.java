@@ -4,7 +4,6 @@ import cl.tenpo.tenpochallenge.service.ExternalPercentageService;
 import cl.tenpo.tenpochallenge.service.exception.UnavailableExternalPercentageServiceException;
 import cl.tenpo.tenpochallenge.utils.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -23,14 +22,9 @@ public class ExternalPercentageServiceImpl implements ExternalPercentageService 
     SleepUtil.sleep(1000);
 
     if (Math.random() > 0.4) {
-      throw new UnavailableExternalPercentageServiceException("external percentage service unavailable");
+      throw new UnavailableExternalPercentageServiceException();
     }
 
     return BigDecimal.valueOf(0.1);
-  }
-
-  @CacheEvict(value = "percentage")
-  public void updatePercentage() {
-    log.info("percentage cache removed");
   }
 }

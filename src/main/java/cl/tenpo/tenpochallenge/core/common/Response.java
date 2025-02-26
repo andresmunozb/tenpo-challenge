@@ -1,13 +1,17 @@
 package cl.tenpo.tenpochallenge.core.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response<T> {
   private T data;
   private List<Notification> notifications;
@@ -15,11 +19,6 @@ public class Response<T> {
   public Response(T data) {
     this.data = data;
     this.notifications = new ArrayList<>();
-  }
-
-  public Response(T data, List<Notification> notifications) {
-    this.data = data;
-    this.notifications = notifications;
   }
 
   public static <T> Response<T> of(T data) {

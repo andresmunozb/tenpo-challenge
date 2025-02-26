@@ -39,6 +39,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.retry:spring-retry'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
@@ -60,4 +61,15 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    include '**/*UnitTest.class'
+}
+
+tasks.register('unitTest', Test) {
+    useJUnitPlatform()
+    include '**/*UnitTest.class'
+}
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform()
+    include '**/*IntegrationTest.class'
 }
