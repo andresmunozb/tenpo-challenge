@@ -72,19 +72,49 @@ Configura las siguientes variables de entorno según tus necesidades:
 ### Análisis de decisiones técnicas
 
 * Sobre estructura de archivos:
-  * Se intenta llevar un clean architecture sin aplicar arquitectura hexagonal o algo sofisticado, ya que no valdría la pena para un proyecto tan pequeño.
+  * Se intenta llevar una arquitectura limpia (clean architecture) sin aplicar arquitectura hexagonal o algo sofisticado, ya que no valdría la pena para un proyecto tan pequeño.
     * `Core`: Contiene las principales clases utilizadas por las otras capas.
     * `Controller`: Contienen los endpoints que se exponen.
     * `Service`: Contienen la lógica de negocio (simple)
     * `Repository`: Implementan la comunicación con la base de datos.
     * `Event`: Maneja eventos de forma asíncrona.
   * Se  implementa manejo global de excepciones centralizada con `@ControllerAdvice`
-  * 
-    
+
+* Sobre Flyway vs Hibernate
+  * Se prefirió utilizar Flyway en lugar de las herramiebtas de generación automática de esquemas de Hibertante, pars tener un mayor control de las modificaciones en la base de datos.
+
+* Sobre Filtros:
+  * Se elige implementar filtros para agregar lógica de forma centralizada para todos los requests.
+  * Se implementan sobre dos filtros para los requests:
+    * LoggingFilter: Contiene la lógica necesaria para guardar el historial de llamadas.
+    * RateLimitFiltee: Contiene la logica necesaria para manejar el limite de requests.
+
 * Sobre caché:
-  * 
+  * Se utiliza Redis como cache por su simplicidad.
+  * Se utiliza para manejar la cantidad de request por IP (podria adaptarse por usuario si es requerido)
+    * Esto permite que si se tienen multiples instancias del micro servicio se pueda manejar de forma correcta compartiendo la cantidad de requests.
+  * Tambien se utiliza para guardar en cache las llamadas a servicio externo para obtener el porcentaje, mejorando el performance.
+
+* Sobre reintentos:
+  * Se elige retrayable por su simplicidad y capacidad para configurar cantidad de retries,
+
+* Sobre eventos asíncronos:
+  * Se prefirió utilizar mecanismos internos para manejar eventos como ApplicationEventPublisher en lugar de Kafka.
+  * Ventajas:
+    * Simplicidad de desarrollo
+    * Menores requisitos técnicos
+    * Bajo acoplamiento temporalmente
+    * Menos latencia
+  * Limitaciones:
+    * Escalabilidad, los eventos no pueden ser consumidos por otras aplicaciones de ser requerido
+    * Se pierden funcionalidades de robustes: reintentos, persistencia, auditoria.
+
 * Sobre imágenes docker:
+  * Para la construcción de las imagenes se realiza por capas (layers), permitiendo que la reconstrucción sea mas rápida si es que no cambian las dependencias.
   * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque actualmente tiene la menor cantidad de vulnerabilidades.
-  * Para las imagenes de redis y postgres se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
+  * Para las imagenes de redis, postgres y gradle se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
+
+* Sobre CI/CD
+  * Se implementa github action para publicar imagen de docker automáticamente en docker hub. Se gatilla al cuando se realiza un push a master. Permite mantener siempre actualizada la imagen de docker hub publicada.
 
 
