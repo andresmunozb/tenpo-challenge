@@ -111,7 +111,7 @@ Configura las siguientes variables de entorno según tus necesidades:
 
 * Sobre imágenes docker:
   * Para la construcción de las imagenes se realiza por capas (layers), permitiendo que la reconstrucción sea mas rápida si es que no cambian las dependencias.
-  * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque actualmente tiene la menor cantidad de vulnerabilidades.
+  * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque es ligera y actualmente tiene la menor cantidad de vulnerabilidades.
   * Para las imagenes de redis, postgres y gradle se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
 
 * Sobre CI/CD
