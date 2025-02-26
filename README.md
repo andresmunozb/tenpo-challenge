@@ -96,7 +96,7 @@ Configura las siguientes variables de entorno según tus necesidades:
   * Tambien se utiliza para guardar en cache las llamadas a servicio externo para obtener el porcentaje, mejorando el performance.
 
 * Sobre reintentos:
-  * Se elige retrayable por su simplicidad y capacidad para configurar cantidad de retries,
+  * Se elige retrayable por su simplicidad y capacidad para configurar cantidad de retries y backoff (delay y multiplier)
 
 * Sobre eventos asíncronos:
   * Se prefirió utilizar mecanismos internos para manejar eventos como ApplicationEventPublisher en lugar de Kafka.
