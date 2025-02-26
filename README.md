@@ -75,6 +75,30 @@ Configura las siguientes variables de entorno según tus necesidades:
   - `REDIS_HOST`: Dirección del servidor Redis (por defecto `localhost`).
   - `REDIS_PORT`: Puerto del servidor Redis (por defecto `6379`).
 
+### Levantar la Aplicación Localmente (Sin Docker)
+1.	Asegúrate de tener Java 21 instalado.
+2.	Inicia la aplicación Spring Boot con:
+```
+gradle bootRun
+```
+3.	La aplicación se levantará en el puerto configurado (por defecto, 9090).
+
+
+### Ejecutar tests
+
+#### Tests unitarios
+```
+gradle test
+```
+O tambien puedes utilizar 
+```
+gradle unitTest
+```
+
+#### Tests de integración
+```
+gradle integrationTest
+```
 
 ### Análisis de decisiones técnicas
 
