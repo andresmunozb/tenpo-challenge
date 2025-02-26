@@ -40,7 +40,7 @@ Puedes deplegar la aplicación localmente con este simple comando:
 ```
 docker compose up -d
 ```
-El comando levantará automáticamente Redis, PostgreSQL y la aplicación API.
+El comando levantará automáticamente Redis, PostgreSQL y la aplicación SpringBoot (API).
 
 ### Desplegar PostgreSQL y Resdis con Docker (docker-compose)
 
