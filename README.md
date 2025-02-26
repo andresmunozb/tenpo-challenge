@@ -81,7 +81,7 @@ Configura las siguientes variables de entorno según tus necesidades:
   * Se  implementa manejo global de excepciones centralizada con `@ControllerAdvice`
 
 #### Sobre Flyway vs Hibernate
-  * Se prefirió utilizar Flyway en lugar de las herramiebtas de generación automática de esquemas de Hibertante, pars tener un mayor control de las modificaciones en la base de datos.
+  * Se prefirió utilizar Flyway en lugar de las herramientas de generación automática de esquemas de Hibernate, pars tener un mayor control de las modificaciones en la base de datos.
 
 #### Sobre Filtros
   * Se elige implementar filtros para agregar lógica de forma centralizada para todos los requests.
