@@ -50,6 +50,13 @@ docker compose up -d postgres redis
 ```
 
 ### Desplegar aplicación desde Docker Hub
+Puedes utilizar este comando para obtener y correr la imagen desde Docker Hub.
+Procura reemplazar correctamente las variables.
+
+```
+docker run -d --name tenpo-challenge -p <HOST_PORT>:9090 --env DATASOURCE_URL=jdbc:postgresql://<DB_HOST>:<DB_PORT>/<DB_NAME> --env DATASOURCE_USERNAME=<DB_USERNAME> --env DATASOURCE_PASSWORD=<DB_PASSWORD> --env REDIS_HOST=<REDIS_HOST> --env REDIS_PORT=<REDIS_PORT> andresmunozb/tenpo-challenge:latest
+```
+Ejemplo con valores:
 
 ```
 docker run -d --name tenpo-challenge -p 9090:9090 --env DATASOURCE_URL=jdbc:postgresql://192.168.1.90:5432/postgres --env DATASOURCE_USERNAME=postgres --env DATASOURCE_PASSWORD=postgres --env REDIS_HOST=192.168.1.90 --env REDIS_PORT=6379 andresmunozb/tenpo-challenge:latest
