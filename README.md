@@ -36,7 +36,7 @@ Puedes encontrar una colección de postman con el siguiente nombre:
 
 ### Desplegar aplicación localmente con Docker (docker-compose)
 
-Puedes deplegar la aplicación localmente con este simple comando:
+Puedes desplegar la aplicación localmente con este simple comando:
 ```
 docker compose up -d
 ```
@@ -78,10 +78,10 @@ Configura las siguientes variables de entorno según tus necesidades:
 ### Levantar la aplicación localmente (sin Docker)
 1.	Asegúrate de tener Java 21 instalado.
 2.	Inicia la aplicación Spring Boot con:
-```
-gradle bootRun
-```
-3.	La aplicación se levantará en el puerto configurado (por defecto, 9090).
+    ```
+    gradle bootRun
+    ```
+3.  La aplicación se levantará en el puerto configurado (por defecto, 9090).
 
 
 ### Ejecutar tests
@@ -90,7 +90,7 @@ gradle bootRun
 ```
 gradle test
 ```
-O tambien puedes utilizar 
+O también puedes utilizar 
 ```
 gradle unitTest
 ```
@@ -109,7 +109,7 @@ gradle integrationTest
     * `Service`: Contienen la lógica de negocio (simple)
     * `Repository`: Implementan la comunicación con la base de datos.
     * `Event`: Maneja eventos de forma asíncrona.
-  * Se  implementa manejo global de excepciones centralizada con `@ControllerAdvice`
+  * Se implementa manejo global de excepciones centralizadas con `@ControllerAdvice`
 
 #### Sobre Flyway vs Hibernate
   * Se prefirió utilizar Flyway en lugar de las herramientas de generación automática de esquemas de Hibernate, pars tener un mayor control de las modificaciones en la base de datos.
@@ -118,13 +118,13 @@ gradle integrationTest
   * Se elige implementar filtros para agregar lógica de forma centralizada para todos los requests.
   * Se implementan sobre dos filtros para los requests:
     * LoggingFilter: Contiene la lógica necesaria para guardar el historial de llamadas.
-    * RateLimitFilter: Contiene la logica necesaria para manejar el limite de requests.
+    * RateLimitFilter: Contiene la lógica necesaria para manejar el límite de requests.
 
 #### Sobre caché
   * Se utiliza Redis como cache por su simplicidad.
-  * Se utiliza para manejar la cantidad de request por IP (podria adaptarse por usuario si es requerido)
+  * Se utiliza para manejar la cantidad de request por IP (podría adaptarse por usuario si es requerido)
     * Esto permite que si se tienen multiples instancias del micro servicio se pueda manejar de forma correcta compartiendo la cantidad de requests.
-  * Tambien se utiliza para guardar en cache las llamadas a servicio externo para obtener el porcentaje, mejorando el performance.
+  * También se utiliza para guardar en caché las llamadas a servicio externo para obtener el porcentaje, mejorando el performance.
 
 #### Sobre reintentos
 * Se elige retrayable por su simplicidad y capacidad para configurar cantidad de retries y backoff (delay y multiplier)
@@ -138,14 +138,14 @@ gradle integrationTest
   * Menos latencia
 * Limitaciones:
   * Escalabilidad, los eventos no pueden ser consumidos por otras aplicaciones de ser requerido
-  * Se pierden funcionalidades de robustes: reintentos, persistencia, auditoria.
+  * No se tienen algunas funcionalidades: reintentos, persistencia, auditoria.
 
 #### Sobre imágenes docker:
-* Para la construcción de las imagenes se realiza por capas (layers), permitiendo que la reconstrucción sea mas rápida si es que no cambian las dependencias.
+* Para la construcción de las imágenes se realiza por capas (layers), permitiendo que la reconstrucción sea más rápida si es que no cambian las dependencias.
 * Se utiliza imagen [21-jdk-slim-buster](https://hub.docker.com/layers/library/openjdk/21-jdk-slim-buster/images/sha256-4d4212d0216b3846a3afa1b65de764f4a76313ab8753e3c05590f187b2c253ee) porque es ligera y actualmente tiene la menor cantidad de vulnerabilidades.
-* Para las imagenes de redis, postgres y gradle se utiliza imagenes basadas en alpine ya que por norma general son mas ligeras.
+* Para las imágenes de redis, postgres y gradle se utiliza imágenes basadas en alpine, ya que por norma general son más ligeras.
 
 #### Sobre CI/CD
-* Se implementa github action para publicar imagen de docker automáticamente en docker hub. Se gatilla al cuando se realiza un push a master. Permite mantener siempre actualizada la imagen de docker hub publicada.
+* Se implementa github action para publicar imagen de docker automáticamente en docker hub. Se gatilla cuando se realiza un push a master. Permite mantener siempre actualizada la imagen de docker hub publicada.
 
 
