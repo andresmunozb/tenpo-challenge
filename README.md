@@ -87,7 +87,7 @@ Configura las siguientes variables de entorno según tus necesidades:
   * Se elige implementar filtros para agregar lógica de forma centralizada para todos los requests.
   * Se implementan sobre dos filtros para los requests:
     * LoggingFilter: Contiene la lógica necesaria para guardar el historial de llamadas.
-    * RateLimitFiltee: Contiene la logica necesaria para manejar el limite de requests.
+    * RateLimitFilter: Contiene la logica necesaria para manejar el limite de requests.
 
 * Sobre caché:
   * Se utiliza Redis como cache por su simplicidad.
